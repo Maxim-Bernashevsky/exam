@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Cinema</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="lib/jquery-ui.css">
+    <link rel="stylesheet" href="lib/jquery.timepicker.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!--/* Second timepicker */-->
+    <link rel="stylesheet" type="text/css" href="lib/DateTimePicker/jquery.datetimepicker.min.css"/>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+
+<header>
+    <h1>PeachCinema</h1>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <form action="" id="filterCinema" class="form-horizontal">
+                <div class="form-group">
+                    <label for="dateStart">Дата от</label>
+                    <input type="text" id="dateStart" name="dateStart" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="dateEnd">Дата до</label>
+                    <input type="text" id="dateEnd" name="dateEnd" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="film">Фильм</label>
+                    <input type="text" name="film" id="film" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="genre">Жанр</label>
+                    <select name="genre" id="genre" class="form-control">
+                        <option value="0">Не выбрано</option>
+                        <option value="1">Комедия</option>
+                        <option value="2">Драма</option>
+                        <option value="3">Боевик</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeStart">Время от</label>
+                    <input type="text" id="timeStart" name="timeStart" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="timeEnd">Время до</label>
+                    <input type="text" id="timeEnd" name="timeEnd" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Стоимость</label>
+                    <input id="priceMin" name="priceMin" type="text" hidden>
+                    <input id="priceMax" name="priceMax" type="text" hidden>
+                    <input id="price">
+                    <div id="slider-range"></div>
+                </div>
+
+                <input type="submit">
+            </form>
+        </div>
+        <div class="col-md-9">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Дата сеанса</th>
+                    <th>Фильм</th>
+                    <th>Жанр</th>
+                    <th>Время</th>
+                    <th>Стоимость</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>30 мая</td>
+                    <td>Меч короля Артура</td>
+                    <td>фэнтези, боевик, драма</td>
+                    <td>16:00</td>
+                    <td>250 ₽</td>
+                </tr>
+                <tr>
+                    <td>30 мая</td>
+                    <td>Пираты Карибского моря: Мертвецы не рассказывают сказки</td>
+                    <td>фэнтези, боевик, комедия</td>
+                    <td>21:40</td>
+                    <td>280 ₽</td>
+                </tr>
+                <tr>
+                    <td>31 мая</td>
+                    <td>Трио в перьях</td>
+                    <td>мультфильм, приключения</td>
+                    <td>12:50</td>
+                    <td>220 ₽</td>
+                </tr>
+                <tr>
+                    <td>31 мая</td>
+                    <td>Стражи Галактики. Часть 2</td>
+                    <td>фантастика, боевик, приключения</td>
+                    <td>19:40</td>
+                    <td>310 ₽</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+<div id="result"></div>
+
+<footer>
+    <div>footer</div>
+</footer>
+
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="lib/jquery.timepicker.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <!--/* Second timepicker */-->
+    <script src="lib/DateTimePicker/jquery.datetimepicker.full.min.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+</html>
