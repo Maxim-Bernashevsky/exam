@@ -49,7 +49,7 @@ $( function() {
         //console.log( JSON.stringify($( "#filterCinema" ).serializeArray()) );
         //var data =  JSON.stringify($( "#filterCinema" ).serializeArray());
        // filterData();
-        ReadFile('films.php', 'result', filterData(), 'search');
+        ReadFile('service.php', 'result', filterData(), 'search');
     });
     function filterData() {
         return {
@@ -68,13 +68,13 @@ $( function() {
     $( "#dateEnd" ).on( "change", function( event ) {
         console.log( $( "#filterCinema" ).serialize() );
 
-        ReadFile('films.php', 'result', 0);
+        ReadFile('../service.php', '#result', 0);
     });
 
     $( "#film" ).on( "keyup", function( event ) {
         console.log( JSON.stringify($( "#filterCinema" ).serializeArray()) );
 
-        ReadFile('films.php', 'result', 0);
+        ReadFile('../service.php', '#result', 0);
     });
 
     $( "#genre" ).on( "change", function( event ) {
