@@ -53,14 +53,14 @@ $( function() {
     });
     function filterData() {
         return {
-            dateStart: dateStart.value,
-            dateEnd: dateEnd.value,
-            film: film.value,
-            genre: genre.value,
-            timeStart: timeStart.value,
-            timeEnd: timeStart.value,
-            priceMin: priceMin.value,
-            priceMax: priceMax.value
+            dateStart: dateStart.value || null,
+            dateEnd: dateEnd.value || null,
+            film: film.value || null,
+            genre: genre.value || null,
+            timeStart: timeStart.value || null,
+            timeEnd: timeStart.value || null,
+            priceMin: priceMin.value || null,
+            priceMax: priceMax.value || null
         };
 
     }
@@ -105,9 +105,34 @@ $( function() {
 
 function ReadFile(filename, container, filterData, type) {
     //Создаем функцию обработчик
-    var Handler = function(Request) {
-        document.getElementById(container).innerHTML = Request.responseText;
+    var search = function(Request) {
+        //document.getElementById(container).innerHTML = Request.responseText;
+        var data = JSON.parse(Request.responseText);
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        data.forEach(el => {
+            //filmsTable.
+            //let tr = document.createElement("tr");
+            //forEach()
+            console.log(el);
+        });
+
+    };
+    var Handler;
+
+    switch(type){
+        case 'search':
+            Handler = search;
+        case '':
+            //
+        default:
+            //
+
     }
+
+
+
+
+
     //document.getElementById(container).innerHTML = '<img src="Loader.gif" width="100"/>';
     //Отправляем запрос
     console.log(filterData);
