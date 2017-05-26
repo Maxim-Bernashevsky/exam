@@ -97,12 +97,6 @@ $( function() {
     }
 } );
 
-
-
-
-
-
-
 function ReadFile(filename, container, filterData, type) {
     //Создаем функцию обработчик
     var Handler = function(Request) {
