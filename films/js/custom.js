@@ -100,7 +100,7 @@ $( function() {
 function ReadFile(filename, container, filterData, type) {
     //Создаем функцию обработчик
     var search = function(Request) {
-        //document.getElementById(container).innerHTML = Request.responseText;
+        document.getElementById(container).innerHTML = Request.responseText;
         var data = JSON.parse(Request.responseText);
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         data.forEach(el => {
