@@ -46,16 +46,35 @@ $( function() {
 
 
     $( "#dateStart" ).on( "change", function( event ) {
-        console.log( JSON.stringify($( "#filterCinema" ).serializeArray()) );
-        ReadFile('films.php', 'result', 0);
+        //console.log( JSON.stringify($( "#filterCinema" ).serializeArray()) );
+        //var data =  JSON.stringify($( "#filterCinema" ).serializeArray());
+       // filterData();
+        ReadFile('films.php', 'result', filterData(), 'search');
     });
+    function filterData() {
+        return {
+            dateStart: dateStart.value,
+            dateEnd: dateEnd.value,
+            film: film.value,
+            genre: genre.value,
+            timeStart: timeStart.value,
+            timeEnd: timeStart.value,
+            priceMin: priceMin.value,
+            priceMax: priceMax.value
+        };
+
+    }
 
     $( "#dateEnd" ).on( "change", function( event ) {
         console.log( $( "#filterCinema" ).serialize() );
+
+        ReadFile('films.php', 'result', 0);
     });
 
     $( "#film" ).on( "keyup", function( event ) {
         console.log( JSON.stringify($( "#filterCinema" ).serializeArray()) );
+
+        ReadFile('films.php', 'result', 0);
     });
 
     $( "#genre" ).on( "change", function( event ) {
@@ -84,14 +103,19 @@ $( function() {
 
 
 
-function ReadFile(filename, container, filterData) {
+function ReadFile(filename, container, filterData, type) {
     //Создаем функцию обработчик
     var Handler = function(Request) {
         document.getElementById(container).innerHTML = Request.responseText;
     }
     //document.getElementById(container).innerHTML = '<img src="Loader.gif" width="100"/>';
     //Отправляем запрос
-    SendRequest("POST", filename, filterData, Handler);
+    console.log(filterData);
+    var request = 'type=' +  type + '&' + 'data=' + JSON.stringify(filterData);
+    console.warn(request);
+    console.log(request);
+
+    SendRequest("POST", filename, request, Handler);
 }
 
 
