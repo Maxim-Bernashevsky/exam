@@ -11,8 +11,7 @@ if(isset ($_POST['type']) && isset($_POST['data'])) {
     $data = $_POST['data'];
     switch ($type){
         case 'search':
-            //search($data);
-            getFilm(1);
+            search($data);
             break;
         case 'getFilm':
             getFilm($data);
@@ -127,9 +126,8 @@ function search($filter) {
 function getFilm($data) {
     $db = connect();
     if($db){
-//        $data = json_decode($data, true);
-//        $id = $data['id'];
-        $id = $data;
+        $data = json_decode($data, true);
+        $id = $data['id'];
         $sql = 'SELECT 
                 `movies`.`name` AS `movie_name`,
                 `movies`.`desc` AS `desc`,
@@ -151,7 +149,7 @@ function getFilm($data) {
                 foreach ($actors as $key => &$value) {
                     $actors[$key] = $value[0];
                 }
-                $film ['actors'] = implode(",", $actors);
+                $film ['actors'] = implode(", ", $actors);
             }
             $response = json_encode($film, JSON_UNESCAPED_UNICODE);
             echo $response;
