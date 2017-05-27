@@ -107,7 +107,11 @@ $( function() {
 function ReadFile(filename, container, filterData, type) {
     //Создаем функцию обработчик
     const search = function(Request) {
+<<<<<<< Updated upstream
         //document.getElementById(container).innerHTML = Request.responseText;
+=======
+        //console.log(Request.responseText);
+>>>>>>> Stashed changes
         const data = JSON.parse(Request.responseText);
         filmsTable.innerHTML = '';
         data.forEach(tr => {
