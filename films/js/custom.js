@@ -64,10 +64,10 @@ $( function() {
         };
     }
 
-    function getFilmId(){
+    function getSeanceId(){
         console.log('iddddd', $('#myModal').attr('data-movie-id'));
         return {
-            cinema_id: $('#myModal').attr('data-movie-id')
+            id: $('#myModal').attr('data-movie-id')
         }
     }
 
@@ -112,7 +112,7 @@ $( function() {
         myModal.setAttribute('data-movie-id', id);
         console.log(e.target.parentNode.attributes['data-movie-id'].value);
 
-        ReadFile('service.php', 'result', getFilmId(), 'getFilm');
+        ReadFile('service.php', 'result', getSeanceId(), 'getSeance');
     });
 
 
@@ -123,7 +123,7 @@ function ReadFile(filename, container, filterData, type) {
     //Создаем функцию обработчик
 
     const search = function(Request) {
-    //console.log(Request.responseText);
+    console.log(Request.responseText);
         const data = JSON.parse(Request.responseText);
 
         filmsTable.innerHTML = '';
@@ -144,10 +144,12 @@ function ReadFile(filename, container, filterData, type) {
 
         });
     };
-    const getFilm = function (Request) {
+    const getSeance = function (Request) {
         const data = JSON.parse(Request.responseText);
-       //----------------------
-
+        filmName.innerHTML = data.movie_name || 'Нет информации';
+        filmDirector.innerHTML = data.directed_by || 'Нет информации';
+        filmActors.innerHTML = data.actors || 'Нет информации';
+        filmDescription.innerHTML = data.desc || 'Нет информации';
     }
 
 
@@ -156,8 +158,8 @@ function ReadFile(filename, container, filterData, type) {
         case 'search':
             Handler = search;
             break;
-        case 'getFilm':
-            Handler = getFilm;
+        case 'getSeance':
+            Handler = getSeance;
             //
             break;
         default:
