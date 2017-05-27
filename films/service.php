@@ -32,7 +32,7 @@ function search($filter) {
     if ($db) {
         $data = json_decode($filter, true);
         $sql = 'SELECT 
-            DATE(`seance`.`datetime`) AS `seance_date`,
+            DATE_FORMAT(`seance`.`datetime`,"%d/%m/%Y") AS `seance_date`,
             `movies`.`name` AS `movie_name`,
             `genre`.`name` AS `genre_name`,
             TIME(`seance`.`datetime`) AS `seance_time`,
@@ -95,6 +95,6 @@ function search($filter) {
         $searchResult = mysqli_fetch_all($query, MYSQLI_ASSOC);
         $response = json_encode($searchResult, JSON_UNESCAPED_UNICODE);
         echo $response;
-    } else echo 'хуй вам, а не табличка';
+    } else echo 'Данные не получены';
 
 }

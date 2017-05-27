@@ -97,35 +97,33 @@ $( function() {
     }
 } );
 
+
 function ReadFile(filename, container, filterData, type) {
     //Создаем функцию обработчик
-    var search = function(Request) {
-        document.getElementById(container).innerHTML = Request.responseText;
-        var data = JSON.parse(Request.responseText);
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        data.forEach(el => {
-            //filmsTable.
-            //let tr = document.createElement("tr");
-            //forEach()
-            console.log(el);
+    const search = function(Request) {
+        //document.getElementById(container).innerHTML = Request.responseText;
+        const data = JSON.parse(Request.responseText);
+        data.forEach(tr => {
+            let tableRow = document.createElement("tr");
+            for(let td in tr) {
+                let tableData = document.createElement("td");
+                tableData.innerHTML = tr[td];
+                tableRow.appendChild(tableData);
+            }
+            filmsTable.appendChild(tableRow);
         });
-
     };
-    var Handler;
-
+    let Handler;
     switch(type){
         case 'search':
             Handler = search;
+            break;
         case '':
             //
+            break;
         default:
             //
-
     }
-
-
-
-
 
     //document.getElementById(container).innerHTML = '<img src="Loader.gif" width="100"/>';
     //Отправляем запрос
