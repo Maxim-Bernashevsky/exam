@@ -74,3 +74,11 @@ tbody tr:hover{
 .modal-header{
     background-color: #fff0e2;
 }
+.seance-block{
+    text-align: left;
+}
+
+.seanceDate, .seanceTime{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
