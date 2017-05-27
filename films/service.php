@@ -11,11 +11,10 @@ if(isset ($_POST['type']) && isset($_POST['data'])) {
     $data = $_POST['data'];
     switch ($type){
         case 'search':
-            //search($data);
-            getFilm(1);
+            search($data);
             break;
-        case 'getFilm':
-            getFilm($data);
+        case 'getSeance':
+            getSeance($data);
             break;
         default:
             sendErrorMessage("Not found");
@@ -123,19 +122,19 @@ function search($filter) {
     } else sendErrorMessage('Данные не получены');
 }
 
-function getFilm($data) {
+function getSeance($data) {
     $db = connect();
     if($db){
-//        $data = json_decode($data, true);
-//        $id = $data['id'];
-        $id = $data;
+        $data = json_decode($data, true);
+        $id = $data['id'];
         $sql = 'SELECT 
                 `movies`.`name` AS `movie_name`,
                 `movies`.`desc` AS `desc`,
                 CONCAT(`directed`.`first_name`,\' \', `last_name`) AS `directed_by`
-                FROM `movies`
+                FROM `seance`
+                LEFT JOIN `movies` ON `seance`.`ID_movie` = `movies`.`id`
                 LEFT JOIN `directed` ON `movies`.`id_directed` = `directed`.`ID`
-                WHERE `movies`.`ID` = '.$id;
+                WHERE `seance`.`ID` = '.$id;
         $queryFilm = mysqli_query($db, $sql);
         if (mysqli_num_rows($queryFilm) > 0) {
             $film = mysqli_fetch_assoc($queryFilm);
@@ -156,7 +155,6 @@ function getFilm($data) {
             echo $response;
         } else sendErrorMessage('Данные не получены');
     } else sendErrorMessage('Данные не получены');
-
 }
 
 function sendErrorMessage($message) {
