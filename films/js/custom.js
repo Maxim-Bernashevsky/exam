@@ -122,10 +122,10 @@ $( function() {
 function ReadFile(filename, container, filterData, type) {
     //Создаем функцию обработчик
 
-
     const search = function(Request) {
     //console.log(Request.responseText);
         const data = JSON.parse(Request.responseText);
+
         filmsTable.innerHTML = '';
         data.forEach(tr => {
             let tableRow = document.createElement("tr");
