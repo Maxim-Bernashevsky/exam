@@ -37,6 +37,7 @@ function search($filter) {
         $sql = 'SELECT 
             DATE_FORMAT(`seance`.`datetime`,"%d/%m/%Y") AS `seance_date`,
             `movies`.`name` AS `movie_name`,
+            `movies`.`ID` AS `movie_id`,
             `genre`.`name` AS `genre_name`,
             TIME(`seance`.`datetime`) AS `seance_time`,
             `cinema`.`name` AS `cinema_name`,
