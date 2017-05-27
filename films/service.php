@@ -13,6 +13,9 @@ if(isset ($_POST['type']) && isset($_POST['data'])) {
         case 'search':
             search($data);
             break;
+        case 'getFilm':
+            getFilm($data);
+            break;
         default:
             echo 'Not found';
             break;
@@ -71,13 +74,13 @@ function search($filter) {
                 case 'timeStart':
                     if($value !== null) {
                         $timeStart = strtotime($value);
-                        $timeStart = date('H-i', $timeStart);
+                        $timeStart = date('H-i-s', $timeStart);
                     $sql .= 'TIME(`seance`.`datetime`) >=  \''.$timeStart. '\' AND ' ;}
                     break;
                 case 'timeEnd':
                     if($value !== null) {
                         $timeEnd = strtotime($value);
-                        $timeEnd = date('H-i', $timeEnd);
+                        $timeEnd = date('H-i-s', $timeEnd);
                     $sql .= 'TIME(`seance`.`datetime`) <=  \''.$timeEnd. '\' AND ' ;}
                     break;
                 case 'priceMin':
@@ -92,9 +95,34 @@ function search($filter) {
         $sql .= '1
         ORDER BY `movie_name`, DATE(`seance`.`datetime`) ASC, TIME(`seance`.`datetime`) ASC;';
         $query = mysqli_query($db, $sql);
-        $searchResult = mysqli_fetch_all($query, MYSQLI_ASSOC);
-        $response = json_encode($searchResult, JSON_UNESCAPED_UNICODE);
-        echo $response;
+        if (mysqli_num_rows($query) > 0) {
+            $searchResult = mysqli_fetch_all($query, MYSQLI_ASSOC);
+            $response = json_encode($searchResult, JSON_UNESCAPED_UNICODE);
+               echo $response;
+//            echo $sql;
+        } else echo 'Данные не получены';
+    } else echo 'Данные не получены';
+
+}
+
+function getFilm($data) {
+    $db = connect();
+    if($db){
+        $data = json_decode($data, true);
+        $id = $data['id'];
+        $sql = 'SELECT 
+                `movies`.`name` AS `movie_name`,
+                `movies`.`desc` AS `desc`,
+                CONCAT(`directed`.`first_name`,\' \', `last_name`)
+                FROM `movies`
+                LEFT JOIN `directed` ON `movies`.`id_directed` = `directed`.`ID`
+                WHERE `movies`.`ID` = '.$id;
+        $query = mysqli_query($db, $sql);
+        if (mysqli_num_rows($query) > 0) {
+            $searchResult = mysqli_fetch_all($query, MYSQLI_ASSOC);
+            $response = json_encode($searchResult, JSON_UNESCAPED_UNICODE);
+            echo $response;
+        } else echo 'Данные не получены';
     } else echo 'Данные не получены';
 
 }
