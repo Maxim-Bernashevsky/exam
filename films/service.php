@@ -37,7 +37,7 @@ function search($filter) {
         $sql = 'SELECT 
             DATE_FORMAT(`seance`.`datetime`,"%d/%m/%Y") AS `seance_date`,
             `movies`.`name` AS `movie_name`,
-            `movies`.`ID` AS `movie_id`,
+            `seance`.`ID` AS `seance_id`,
             `genre`.`name` AS `genre_name`,
             TIME(`seance`.`datetime`) AS `seance_time`,
             `cinema`.`name` AS `cinema_name`,
@@ -129,12 +129,22 @@ function getSeance($data) {
         $data = json_decode($data, true);
         $id = $data['id'];
         $sql = 'SELECT 
+                DATE_FORMAT(`seance`.`datetime`,"%d/%m/%Y") AS `seance_date`,
+                `seance`.`ID` AS `seance_id`,
                 `movies`.`name` AS `movie_name`,
+                `genre`.`name` AS `genre_name`,
+                TIME(`seance`.`datetime`) AS `seance_time`,
                 `movies`.`desc` AS `desc`,
-                CONCAT(`directed`.`first_name`,\' \', `last_name`) AS `directed_by`
+                `cinema`.`name` AS `cinema_name`,
+                `hall`.`name` AS `hall_name`,
+                `seance`.`price` AS `seance_price`,
+                CONCAT(`directed`.`first_name`,\' \', `last_name`) AS `directed_by`	
                 FROM `seance`
                 LEFT JOIN `movies` ON `seance`.`ID_movie` = `movies`.`id`
                 LEFT JOIN `directed` ON `movies`.`id_directed` = `directed`.`ID`
+                LEFT JOIN `genre` ON `movies`.`ID_genre` = `genre`.`ID`
+                LEFT JOIN `hall` ON `seance`.`ID_hall` = `hall`.`ID`
+                LEFT JOIN `cinema` ON `hall`.`ID_cinema` = `cinema`.`ID`
                 WHERE `seance`.`ID` = '.$id;
         $queryFilm = mysqli_query($db, $sql);
         if (mysqli_num_rows($queryFilm) > 0) {
