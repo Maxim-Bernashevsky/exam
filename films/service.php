@@ -11,13 +11,14 @@ if(isset ($_POST['type']) && isset($_POST['data'])) {
     $data = $_POST['data'];
     switch ($type){
         case 'search':
-            search($data);
+            //search($data);
+            getFilm(1);
             break;
         case 'getFilm':
             getFilm($data);
             break;
         default:
-            echo 'Not found';
+            sendErrorMessage("Not found");
             break;
     }
 }
@@ -80,7 +81,8 @@ function search($filter) {
                         $timeEnd = date('H:i:s', $timeEnd);
                         //echo "timeEnd: ".$data['timeEnd'];
                         if($timeStart <= $timeEnd || $data['timeEnd'] == null) {
-                            $sql .= 'TIME(`seance`.`datetime`) >=  \''.$timeStart. '\' AND ' ;}
+                            $sql .= 'TIME(`seance`.`datetime`) >=  \''.$timeStart. '\' AND ' ;
+                        }
                              elseif($data['timeEnd'] != null && $timeStart > $timeEnd)
                                 {
                                     $sql .= '   (TIME(`seance`.`datetime`) >=  \''.$timeStart.'\' AND
@@ -118,28 +120,47 @@ function search($filter) {
             $response = json_encode($searchResult, JSON_UNESCAPED_UNICODE);
             echo $response;
             //echo $sql;
-        } // else echo 'Данные не получены';
-    } else echo 'Данные не получены';
+        } else sendErrorMessage('По вашему запросу сеансов не найдено');
+    } else sendErrorMessage('Данные не получены');
 }
 
 function getFilm($data) {
     $db = connect();
     if($db){
-        $data = json_decode($data, true);
-        $id = $data['id'];
+//        $data = json_decode($data, true);
+//        $id = $data['id'];
+        $id = $data;
         $sql = 'SELECT 
                 `movies`.`name` AS `movie_name`,
                 `movies`.`desc` AS `desc`,
-                CONCAT(`directed`.`first_name`,\' \', `last_name`)
+                CONCAT(`directed`.`first_name`,\' \', `last_name`) AS `directed_by`
                 FROM `movies`
                 LEFT JOIN `directed` ON `movies`.`id_directed` = `directed`.`ID`
                 WHERE `movies`.`ID` = '.$id;
-        $query = mysqli_query($db, $sql);
-        if (mysqli_num_rows($query) > 0) {
-            $searchResult = mysqli_fetch_all($query, MYSQLI_ASSOC);
-            $response = json_encode($searchResult, JSON_UNESCAPED_UNICODE);
+        $queryFilm = mysqli_query($db, $sql);
+        if (mysqli_num_rows($queryFilm) > 0) {
+            $film = mysqli_fetch_assoc($queryFilm);
+            $sql = 'SELECT 
+                        CONCAT(`actor`.`first_name`,\' \', `actor`.`last_name`) AS `actor_name`
+                        FROM `actor_list`
+                        LEFT JOIN `actor` ON `actor`.`id` = `actor_list`.`ID_actor`
+                        WHERE `actor_list`.`ID_movis` ='.$id;
+            $queryActors = mysqli_query($db, $sql);
+            if (mysqli_num_rows($queryActors) > 0) {
+                $actors = mysqli_fetch_all($queryActors);
+                foreach ($actors as $key => &$value) {
+                    $actors[$key] = $value[0];
+                }
+                $film ['actors'] = implode(",", $actors);
+            }
+            $response = json_encode($film, JSON_UNESCAPED_UNICODE);
             echo $response;
-        } // else echo 'Данные не получены';
-    } else echo 'Данные не получены';
+        } else sendErrorMessage('Данные не получены');
+    } else sendErrorMessage('Данные не получены');
 
+}
+
+function sendErrorMessage($message) {
+    $error = ['error' => $message];
+    echo json_encode($error, JSON_UNESCAPED_UNICODE);
 }

@@ -124,8 +124,7 @@ function ReadFile(filename, container, filterData, type) {
 
 
     const search = function(Request) {
-        //document.getElementById(container).innerHTML = Request.responseText;
-
+    //console.log(Request.responseText);
         const data = JSON.parse(Request.responseText);
         filmsTable.innerHTML = '';
         data.forEach(tr => {
