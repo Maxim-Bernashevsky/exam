@@ -81,7 +81,7 @@
             <div id="result"></div>
 
 
-            <table class="table table-bordered" >
+            <table class="table table-bordered" id="filmsList" >
                 <thead>
                 <tr>
                     <th>Дата сеанса</th>
@@ -113,10 +113,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h4 class="modal-title">Film</h4>
             </div>
-            <div class="modal-body">
-                <p>Some text in the modal.</p>
+            <div class="modal-body" id="filmInfo">
+                <p class="filmDirector">
+                    <span>Director: </span>Director
+                </p>
+                <p class="filmActors">
+                    <span>Actors: </span>Actors
+                </p>
+                <p>
+                    <span>Actors: </span>Description
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
