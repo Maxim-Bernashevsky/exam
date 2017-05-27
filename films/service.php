@@ -54,55 +54,71 @@ function search($filter) {
             trim($value);
             switch ($key) {
                 case 'dateStart':
-                    if($value !== null) {
+                    if($value != null) {
                         $dateStart = strtotime($value);
                         $dateStart = date('Y-m-d', $dateStart);
                     $sql .= 'DATE(`seance`.`datetime`) >= \''.$dateStart.'\' AND ' ;}
                     break;
                 case 'dateEnd':
-                    if($value !== null) {
+                    if($value != null) {
                         $dateEnd = strtotime($value);
                         $dateEnd = date('Y-m-d', $dateEnd);
                     $sql .= 'DATE(`seance`.`datetime`) <= \''.$dateEnd.'\' AND ' ;}
                     break;
                 case 'film':
-                    if($value !== null) {$sql .= '`movies`.`name` COLLATE \'utf8_general_ci\' LIKE "%'.$value.'%" AND ';}
+                    if($value != null) {$sql .= '`movies`.`name` COLLATE \'utf8_general_ci\' LIKE "%'.$value.'%" AND ';}
                     break;
                 case 'genre':
                     if($value != 0) {$sql .= '`genre`.`id` = '.$value.' AND ';}
                     break;
                 case 'timeStart':
-                    if($value !== null) {
+                    if($value != null) {
                         $timeStart = strtotime($value);
-                        $timeStart = date('H-i-s', $timeStart);
-                    $sql .= 'TIME(`seance`.`datetime`) >=  \''.$timeStart. '\' AND ' ;}
+                        $timeStart = date('H:i:s', $timeStart);
+                        $timeEnd = strtotime($data['timeEnd']);
+                        $timeEnd = date('H:i:s', $timeEnd);
+                        //echo "timeEnd: ".$data['timeEnd'];
+                        if($timeStart <= $timeEnd || $data['timeEnd'] == null) {
+                            $sql .= 'TIME(`seance`.`datetime`) >=  \''.$timeStart. '\' AND ' ;}
+                             elseif($data['timeEnd'] != null && $timeStart > $timeEnd)
+                                {
+                                    $sql .= '   (TIME(`seance`.`datetime`) >=  \''.$timeStart.'\' AND
+                                                TIME(`seance`.`datetime`) <=  \'23:59:59\') OR
+                                                (TIME(`seance`.`datetime`) >=  \'00:00:00\' AND
+                                                TIME(`seance`.`datetime`) <=  \''.$timeEnd.'\') AND ';
+                                }
+                    }
                     break;
                 case 'timeEnd':
-                    if($value !== null) {
+                    if($value != null) {
                         $timeEnd = strtotime($value);
-                        $timeEnd = date('H-i-s', $timeEnd);
-                    $sql .= 'TIME(`seance`.`datetime`) <=  \''.$timeEnd. '\' AND ' ;}
+                        $timeEnd = date('H:i:s', $timeEnd);
+                        $timeStart = strtotime($data['timeStart']);
+                        $timeStart = date('H:i:s', $timeStart);
+                        if ($timeStart <= $timeEnd || $data['timeStart'] == null) {
+                            $sql .= 'TIME(`seance`.`datetime`) <=  \''.$timeEnd. '\' AND ' ;
+                        }
+                    }
                     break;
                 case 'priceMin':
-                    if($value !== null) {$sql .= '`seance`.`price` >= '.$value.' AND ';}
+                    if($value != null) {$sql .= '`seance`.`price` >= '.$value.' AND ';}
                     break;
                 case 'priceMax':
-                    if($value !== null) {$sql .= '`seance`.`price` <= '.$value.' AND ';}
+                    if($value != null) {$sql .= '`seance`.`price` <= '.$value.' AND ';}
                     break;
             }
         }
         unset ($value);
         $sql .= '1
-        ORDER BY `movie_name`, DATE(`seance`.`datetime`) ASC, TIME(`seance`.`datetime`) ASC;';
+        ORDER BY DATE(`seance`.`datetime`) ASC, TIME(`seance`.`datetime`) ASC, `movie_name` ASC;';
         $query = mysqli_query($db, $sql);
         if (mysqli_num_rows($query) > 0) {
             $searchResult = mysqli_fetch_all($query, MYSQLI_ASSOC);
             $response = json_encode($searchResult, JSON_UNESCAPED_UNICODE);
-               echo $response;
-//            echo $sql;
-        } else echo 'Данные не получены';
+            echo $response;
+            //echo $sql;
+        } // else echo 'Данные не получены';
     } else echo 'Данные не получены';
-
 }
 
 function getFilm($data) {
@@ -122,7 +138,7 @@ function getFilm($data) {
             $searchResult = mysqli_fetch_all($query, MYSQLI_ASSOC);
             $response = json_encode($searchResult, JSON_UNESCAPED_UNICODE);
             echo $response;
-        } else echo 'Данные не получены';
+        } // else echo 'Данные не получены';
     } else echo 'Данные не получены';
 
 }
