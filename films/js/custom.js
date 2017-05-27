@@ -2,7 +2,8 @@
 $( function() {
     /* RU datepicker */
     $.datepicker.regional['ru'] = {
-        monthNames: ['Яварь', 'Февраль', 'Март', 'Апрель',
+        dateFormat:'dd/mm/yy',
+        monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
             'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
             'Октябрь', 'Ноябрь', 'Декабрь'],
         dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
@@ -58,7 +59,7 @@ $( function() {
             film: film.value || null,
             genre: genre.value || null,
             timeStart: timeStart.value || null,
-            timeEnd: timeStart.value || null,
+            timeEnd: timeEnd.value || null,
             priceMin: priceMin.value || null,
             priceMax: priceMax.value || null
         };
@@ -66,33 +67,38 @@ $( function() {
     }
 
     $( "#dateEnd" ).on( "change", function( event ) {
-        console.log( $( "#filterCinema" ).serialize() );
-
-        ReadFile('../service.php', '#result', 0);
+        //console.log( $( "#filterCinema" ).serialize() );
+        ReadFile('service.php', 'result', filterData(), 'search');
     });
 
     $( "#film" ).on( "keyup", function( event ) {
-        console.log( JSON.stringify($( "#filterCinema" ).serializeArray()) );
-
-        ReadFile('../service.php', '#result', 0);
+        //console.log( JSON.stringify($( "#filterCinema" ).serializeArray()) );
+        const data = filterData();
+        if(data.film && data.film.length > 2) {
+            ReadFile('service.php', 'result', data, 'search');
+        }
     });
 
     $( "#genre" ).on( "change", function( event ) {
-        console.log( $( "#filterCinema" ).serialize() );
+        //console.log( $( "#filterCinema" ).serialize() );
+        ReadFile('service.php', 'result', filterData(), 'search');
     });
 
     $( "#timeStart" ).on( "change", function( event ) {
         console.log( $( "#filterCinema" ).serialize() );
+        ReadFile('service.php', 'result', filterData(), 'search');
     });
 
     $( "#timeEnd" ).on( "change", function( event ) {
-        console.log( $( "#filterCinema" ).serialize() );
+        //console.log( $( "#filterCinema" ).serialize() );
+        ReadFile('service.php', 'result', filterData(), 'search');
     });
 
     function changePrice(event, ui){
         $( "#priceMin" ).val($(this).slider('values', 0));
         $( "#priceMax" ).val($(this).slider('values', 1) );
-        console.log( $( "#filterCinema" ).serialize() );
+        //console.log( $( "#filterCinema" ).serialize() );
+        ReadFile('service.php', 'result', filterData(), 'search');
 
     }
 } );
@@ -103,6 +109,7 @@ function ReadFile(filename, container, filterData, type) {
     const search = function(Request) {
         //document.getElementById(container).innerHTML = Request.responseText;
         const data = JSON.parse(Request.responseText);
+        filmsTable.innerHTML = '';
         data.forEach(tr => {
             let tableRow = document.createElement("tr");
             for(let td in tr) {
