@@ -57,3 +57,20 @@ footer{
     background: #f1c59f !important;
     box-shadow: none !important;
 }
+#filmsList th:nth-child(6){
+    min-width: 75px;
+}
+tr{
+    transition: .06s ease-in-out;
+}
+tbody tr:hover{
+    background-color: #fff0e2;
+    cursor: pointer;
+}
+
+#filmInfo span{
+    font-weight: bold;
+}
+.modal-header{
+    background-color: #fff0e2;
+}
