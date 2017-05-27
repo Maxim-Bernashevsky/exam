@@ -21,6 +21,7 @@ $( function() {
 //            ]
     };
 
+
     $( "#dateStart" ).datepicker();
     $( "#dateEnd" ).datepicker();
     $('#timeStart').datetimepicker(configTimepicker);
@@ -44,8 +45,6 @@ $( function() {
 
 
 
-
-
     $( "#dateStart" ).on( "change", function( event ) {
         //console.log( JSON.stringify($( "#filterCinema" ).serializeArray()) );
         //var data =  JSON.stringify($( "#filterCinema" ).serializeArray());
@@ -63,7 +62,13 @@ $( function() {
             priceMin: priceMin.value || null,
             priceMax: priceMax.value || null
         };
+    }
 
+    function getFilmId(){
+        console.log('iddddd', $('#myModal').attr('data-movie-id'));
+        return {
+            cinema_id: $('#myModal').attr('data-movie-id')
+        }
     }
 
     $( "#dateEnd" ).on( "change", function( event ) {
@@ -101,35 +106,57 @@ $( function() {
         ReadFile('service.php', 'result', filterData(), 'search');
 
     }
+
+    $( "#filmsTable" ).on( "click", function(e) {
+        const id = e.target.parentNode.attributes['data-movie-id'].value;
+        myModal.setAttribute('data-movie-id', id);
+        console.log(e.target.parentNode.attributes['data-movie-id'].value);
+
+        ReadFile('service.php', 'result', getFilmId(), 'getFilm');
+    });
+
+
 } );
 
 
 function ReadFile(filename, container, filterData, type) {
     //Создаем функцию обработчик
+
+
     const search = function(Request) {
-<<<<<<< Updated upstream
-        //document.getElementById(container).innerHTML = Request.responseText;
-=======
-        //console.log(Request.responseText);
->>>>>>> Stashed changes
+    //console.log(Request.responseText);
         const data = JSON.parse(Request.responseText);
         filmsTable.innerHTML = '';
         data.forEach(tr => {
             let tableRow = document.createElement("tr");
             for(let td in tr) {
                 let tableData = document.createElement("td");
-                tableData.innerHTML = tr[td];
-                tableRow.appendChild(tableData);
+                if(td !== 'movie_id'){
+                    tableData.innerHTML = tr[td];
+                    tableRow.appendChild(tableData);
+                }
+
             }
+            tableRow.setAttribute('data-movie-id', tr['movie_id']);
+            tableRow.value = tr['movie_id'];
             filmsTable.appendChild(tableRow);
+            console.log(tr['movie_id']);
+
         });
     };
+    const getFilm = function (Request) {
+        const data = JSON.parse(Request.responseText);
+       //----------------------
+    }
+
+
     let Handler;
     switch(type){
         case 'search':
             Handler = search;
             break;
-        case '':
+        case 'getFilm':
+            Handler = getFilm;
             //
             break;
         default:
