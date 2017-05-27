@@ -1,4 +1,5 @@
 
+
 $( function() {
     /* RU datepicker */
     $.datepicker.regional['ru'] = {
@@ -65,9 +66,9 @@ $( function() {
     }
 
     function getSeanceId(){
-        console.log('iddddd', $('#myModal').attr('data-movie-id'));
+        //console.log('iddddd', $('#myModal').attr('data-seance-id'));
         return {
-            id: $('#myModal').attr('data-movie-id')
+            id: $('#myModal').attr('data-seance-id')
         }
     }
 
@@ -108,22 +109,33 @@ $( function() {
     }
 
     $( "#filmsTable" ).on( "click", function(e) {
-        const id = e.target.parentNode.attributes['data-movie-id'].value;
-        myModal.setAttribute('data-movie-id', id);
-        console.log(e.target.parentNode.attributes['data-movie-id'].value);
+        const id = e.target.parentNode.attributes['data-seance-id'].value;
+        myModal.setAttribute('data-seance-id', id);
+        console.log(e.target.parentNode.attributes['data-seance-id'].value);
 
         ReadFile('service.php', 'result', getSeanceId(), 'getSeance');
     });
 
 
+
+    $( "#pageHall" ).on( "click", function(e) {
+        //const hall_id = $('#pageHall').attr('data-hall-id');
+        const seanceId = {
+            seanceId: $('#pageHall').attr('data-seance-id')
+        };
+        ReadFile('service.php', 'result', seanceId, 'getHall');
+    });
+
 } );
+
+
 
 
 function ReadFile(filename, container, filterData, type) {
     //Создаем функцию обработчик
 
     const search = function(Request) {
-    console.log(Request.responseText);
+        console.log(Request.responseText);
         const data = JSON.parse(Request.responseText);
 
         filmsTable.innerHTML = '';
@@ -131,26 +143,44 @@ function ReadFile(filename, container, filterData, type) {
             let tableRow = document.createElement("tr");
             for(let td in tr) {
                 let tableData = document.createElement("td");
-                if(td !== 'movie_id'){
+                if(td !== 'seance_id'){
                     tableData.innerHTML = tr[td];
                     tableRow.appendChild(tableData);
                 }
-
             }
-            tableRow.setAttribute('data-movie-id', tr['movie_id']);
-            tableRow.value = tr['movie_id'];
+            tableRow.setAttribute('data-seance-id', tr['seance_id']);
+            tableRow.value = tr['seance_id'];
             filmsTable.appendChild(tableRow);
-            console.log(tr['movie_id']);
+            console.log(tr['seance_id']);
 
         });
     };
     const getSeance = function (Request) {
         const data = JSON.parse(Request.responseText);
+        console.dir(data);
+
         filmName.innerHTML = data.movie_name || 'Нет информации';
-        filmDirector.innerHTML = data.directed_by || 'Нет информации';
-        filmActors.innerHTML = data.actors || 'Нет информации';
-        filmDescription.innerHTML = data.desc || 'Нет информации';
-    }
+        $('p.filmDirector')[0].children[1].innerHTML = data.directed_by || 'Нет информации';
+        $('p.filmActors')[0].children[1].innerHTML = data.actors || 'Нет информации';
+        $('p.filmGenre')[0].children[1].innerHTML = data.genre_name || 'Нет информации';
+        $('p.filmDescription')[0].children[1].innerHTML = data.desc || 'Нет информации';
+
+        $('p.seanceDate')[0].innerHTML = data.seance_date || 'Нет информации';
+        $('p.seanceTime')[0].innerHTML = data.seance_time || 'Нет информации';
+        $('p.seancePrice')[0].children[1].innerHTML = data.seance_price || 'Нет информации';
+        $('p.seanceHall')[0].children[1].innerHTML = data.cinema_name || 'Нет информации';
+
+        pageHall.setAttribute('data-seance-id', data.seance_id);
+        //pageHall.setAttribute('data-hall-id', data.hall_id);
+
+        pageHall.setAttribute('href', 'hall.html?seance_id=' +  data.seance_id);
+    };
+
+
+    const getHall = function(Request) {
+        const data = JSON.parse(Request.responseText);
+        console.log(data);
+    };
 
 
     let Handler;
@@ -160,10 +190,12 @@ function ReadFile(filename, container, filterData, type) {
             break;
         case 'getSeance':
             Handler = getSeance;
-            //
+            break;
+        case 'getHall':
+            Handler = getHall;
             break;
         default:
-            //
+        //
     }
 
     //document.getElementById(container).innerHTML = '<img src="Loader.gif" width="100"/>';
@@ -175,7 +207,6 @@ function ReadFile(filename, container, filterData, type) {
 
     SendRequest("POST", filename, request, Handler);
 }
-
 
 function SendRequest(method, path, args, handler) {
     //Создаём запрос
@@ -239,4 +270,3 @@ function CreateRequest() {
     }
     return Request;
 }
-
