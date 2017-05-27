@@ -160,7 +160,7 @@ function getSeance($data) {
                 foreach ($actors as $key => &$value) {
                     $actors[$key] = $value[0];
                 }
-                $film ['actors'] = implode(",", $actors);
+                $film ['actors'] = implode(", ", $actors);
             }
             $response = json_encode($film, JSON_UNESCAPED_UNICODE);
             echo $response;
