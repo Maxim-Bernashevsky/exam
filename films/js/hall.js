@@ -19,6 +19,8 @@ $( document ).ready(function() {
 
     ReadFile('service.php', 'result', hall, 'getHall');
 
+});
+
     let stateOrder = [];
 
 
@@ -91,4 +93,3 @@ $( document ).ready(function() {
     }
 
 
-});
