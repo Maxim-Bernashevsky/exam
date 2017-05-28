@@ -34,7 +34,7 @@ function ReadFile(filename, container, filterData, type) {
     //Создаем функцию обработчик
 
     const search = function(Request) {
-        //console.log(Request.responseText);
+        console.log(Request.responseText);
         const data = JSON.parse(Request.responseText);
         if(data.error){
             filmsTable.innerHTML = '';
