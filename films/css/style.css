@@ -78,7 +78,7 @@ tr, td{
 #hallTable td{
     transition: background-color .06s ease-in-out;
 }
-#hallTable td:hover{
+#hallTable td:not([data-status="2"]):hover{
     background-color: #faf1e8;
     cursor: pointer;
     box-shadow: inset 0 0 13px -1px #ffe0cd;
@@ -109,7 +109,6 @@ tr, td{
 }
 
 
-
 td[data-status='0']{
     background-color: rgba(209, 255, 185, 0.44);
 }
@@ -128,8 +127,6 @@ td[data-status='2']{
     padding: 20px;
     border-radius: 20px;
     /*background-color: #fcfcfc;*/
-
-
 
     background: linear-gradient(180deg, #fcfcfc, white);
 }
