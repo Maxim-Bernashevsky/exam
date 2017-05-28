@@ -24,45 +24,70 @@ const getSeance = function (Request) {
 
 const getHall = function(Request) {
     console.log(Request.responseText);
-    // const data = JSON.parse(Request.responseText);
 
+    const data = JSON.parse(Request.responseText);
+
+    hallTable.innerHTML = '';
+
+
+    console.log(Object.keys(data.rows));
+
+    Object.keys(data.rows).forEach(tr => {
+        let tableRow = document.createElement("tr");
+        console.log(tr);
+        tableRow.setAttribute('data-row', tr);
+
+        for (let td in data.rows[tr].places) {
+            let tableData = document.createElement("td");
+            //console.log(td);
+            tableData.innerHTML = data.rows[tr].places[td].number;
+            tableData.setAttribute('data-status', data.rows[tr].places[td].status);
+
+            tableRow.appendChild(tableData);
+        }
+        //tableRow.setAttribute('data-seance-id', tr['seance_id']);
+        //tableRow.value = tr['seance_id'];
+        console.log(tableRow)
+        hallTable.appendChild(tableRow);
+        //console.log(tr['seance_id']);
+
+    });
+
+
+};
+
+
+const search = function(Request) {
+    //console.log(Request.responseText);
+    const data = JSON.parse(Request.responseText);
+    if(data.error){
+        filmsTable.innerHTML = '';
+        //console.log(data.error)
+        $('#result').innerHTML = data.error;
+    }else {
+        filmsTable.innerHTML = '';
+        data.forEach(tr => {
+            let tableRow = document.createElement("tr");
+            for (let td in tr) {
+                let tableData = document.createElement("td");
+                if (td !== 'seance_id') {
+                    tableData.innerHTML = tr[td];
+                    tableRow.appendChild(tableData);
+                }
+            }
+            tableRow.setAttribute('data-seance-id', tr['seance_id']);
+            tableRow.value = tr['seance_id'];
+            filmsTable.appendChild(tableRow);
+            //console.log(tr['seance_id']);
+
+        });
+    }
 };
 
 function ReadFile(filename, container, filterData, type) {
 
     console.log(filterData)
     //Создаем функцию обработчик
-
-    const search = function(Request) {
-        //console.log(Request.responseText);
-        const data = JSON.parse(Request.responseText);
-        if(data.error){
-            filmsTable.innerHTML = '';
-            //console.log(data.error)
-            $('#result').innerHTML = data.error;
-        }else {
-            filmsTable.innerHTML = '';
-            data.forEach(tr => {
-                let tableRow = document.createElement("tr");
-                for (let td in tr) {
-                    let tableData = document.createElement("td");
-                    if (td !== 'seance_id') {
-                        tableData.innerHTML = tr[td];
-                        tableRow.appendChild(tableData);
-                    }
-                }
-                tableRow.setAttribute('data-seance-id', tr['seance_id']);
-                tableRow.value = tr['seance_id'];
-                filmsTable.appendChild(tableRow);
-                //console.log(tr['seance_id']);
-
-            });
-        }
-    };
-
-
-
-
 
     let Handler;
     switch(type){
@@ -81,7 +106,7 @@ function ReadFile(filename, container, filterData, type) {
 
     //document.getElementById(container).innerHTML = '<img src="Loader.gif" width="100"/>';
     //Отправляем запрос
-    console.log(filterData);
+    //console.log(filterData);
     var request = 'type=' +  type + '&' + 'data=' + JSON.stringify(filterData);
     console.log('request', request);
 
