@@ -284,8 +284,7 @@ function updateOrder ($data) {
         // Если надо обновить существующие тикеты, отправляем update
         if($sqlUpdate) {
             $sql = $sqlUpdate;
-            //echo $sql;
-            if(mysqli_query($db, $sql)) {sendMessage('info','OK');}
+            if(mysqli_multi_query($db, $sql)) {sendMessage('info','OK');}
             else sendMessage('error','Заказ не был обновлен');
         }
     } else sendMessage('error','Нет подключения к базе данных');

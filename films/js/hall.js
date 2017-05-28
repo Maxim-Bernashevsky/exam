@@ -19,8 +19,6 @@ $( document ).ready(function() {
     console.log(hall)
     ReadFile('service.php', 'result', hall, 'getHall');
 
-
-
     let stateOrder = [];
 
 
