@@ -71,7 +71,6 @@ $( document ).ready(function() {
             el.status = 2;
             updateList.push(el);
             const gray =  $("#hallTable tr[data-row=" + el.row + "] td[data-number=" + el.number + "]")[0];
-            console.log(elll);
             gray.setAttribute('data-status', '2');
         });
 
