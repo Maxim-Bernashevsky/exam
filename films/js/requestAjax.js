@@ -49,7 +49,7 @@ const search = function(Request) {
 };
 
 const getHall = function(Request) {
-    //console.log(Request.responseText);
+    console.log(Request.responseText);
 
     const data = JSON.parse(Request.responseText);
 
