@@ -29,6 +29,8 @@ const search = function(Request) {
         //console.log(data.error)
         $('#result').innerHTML = data.error;
     }else {
+        if(!data.length) return filmsTable.innerHTML = '';
+
         filmsTable.innerHTML = '';
         data.forEach(tr => {
             let tableRow = document.createElement("tr");
@@ -42,8 +44,6 @@ const search = function(Request) {
             tableRow.setAttribute('data-seance-id', tr['seance_id']);
             tableRow.value = tr['seance_id'];
             filmsTable.appendChild(tableRow);
-            //console.log(tr['seance_id']);
-
         });
     }
 };
