@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Ноя 23 2016 г., 20:52
--- Версия сервера: 10.1.9-MariaDB
--- Версия PHP: 7.0.1
+-- Время создания: Май 28 2017 г., 16:40
+-- Версия сервера: 10.1.16-MariaDB
+-- Версия PHP: 7.0.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -2743,6 +2743,35 @@ CREATE TABLE `ticket` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Дамп данных таблицы `ticket`
+--
+
+INSERT INTO `ticket` (`ID`, `ID_seance`, `ID_status`, `row`, `number`) VALUES
+(1, 1, NULL, 1, 7),
+(2, 1, 2, 1, 8),
+(5, 1, NULL, 1, 9),
+(7, 25, 1, 1, 1),
+(8, 25, 1, 1, 2),
+(9, 25, 1, 1, 3),
+(11, 25, 1, 1, 5),
+(14, 25, 1, 1, 6),
+(15, 25, 1, 1, 7),
+(16, 25, 1, 1, 8),
+(17, 25, 1, 1, 9),
+(18, 25, 1, 7, 8),
+(19, 25, 1, 9, 10),
+(20, 25, 1, 1, 10),
+(21, 25, 1, 1, 11),
+(22, 25, NULL, 4, 9),
+(23, 25, 1, 2, 5),
+(24, 25, 1, 2, 6),
+(25, 25, 1, 2, 7),
+(26, 25, 1, 2, 8),
+(27, 25, 1, 2, 9),
+(28, 25, NULL, 3, 9),
+(29, 25, NULL, 4, 12);
+
+--
 -- Индексы сохранённых таблиц
 --
 
@@ -2880,7 +2909,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT для таблицы `ticket`
 --
 ALTER TABLE `ticket`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --
