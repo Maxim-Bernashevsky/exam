@@ -60,11 +60,25 @@ footer{
 #filmsList th:nth-child(6){
     min-width: 75px;
 }
-tr{
-    transition: .06s ease-in-out;
+tr, td{
+    transition: background-color .06s ease-in-out;
 }
-tbody tr:hover{
+#filmsTable tr:hover{
     background-color: #fff0e2;
+    cursor: pointer;
+}
+
+#hallTable td{
+    text-align: center;
+    width: 40px;
+    height: 40px;
+
+}
+#hallTable td{
+    transition: background-color .06s ease-in-out;
+}
+#hallTable td:hover{
+    background-color: #f8e9d9;
     cursor: pointer;
 }
 
@@ -81,4 +95,48 @@ tbody tr:hover{
 .seanceDate, .seanceTime{
     font-size: 1.2rem;
     font-weight: bold;
+}
+#pageHall{
+    background-color: #f9e4d1;
+    background-image: -webkit-linear-gradient(top,#fff 0,#fff0e2 100%);
+}
+
+
+
+td[data-status='0']{
+    background-color: rgba(209, 255, 185, 0.44);
+}
+td[data-status='1']{
+    background-color: #f8e9d9;
+}
+td[data-status='2']{
+    background-color: rgba(224, 229, 222, 0.44);
+}
+
+.orderInfo{
+    text-align: right;
+}
+.wrap-table{
+    margin-top: 20px;
+    background-color: #fcfcfc;
+    padding: 20px;
+    border-radius: 20px;
+}
+#seanceHall{
+    border: none;
+    margin: 0;
+}
+#hallTable{
+
+}
+#hallTable tr{
+}
+
+#hallTable td{
+
+    border: 1px solid #e3e3e3;
+
+}
+#stateOrderBlock{
+    display: inline-block;
 }
