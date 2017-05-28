@@ -64,13 +64,14 @@ const getHall = function(Request) {
             //console.log(td);
             tableData.innerHTML = data.rows[tr].places[td].number;
             tableData.setAttribute('data-status', data.rows[tr].places[td].status);
-
+            tableData.setAttribute('data-number', data.rows[tr].places[td].number);
             tableRow.appendChild(tableData);
         }
         //tableRow.setAttribute('data-seance-id', tr['seance_id']);
         //tableRow.value = tr['seance_id'];
         //console.log(tableRow)
         hallTable.appendChild(tableRow);
+
         //console.log(tr['seance_id']);
     });
 }
