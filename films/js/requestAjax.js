@@ -29,8 +29,27 @@ const getHall = function(Request) {
 
     hallTable.innerHTML = '';
 
-
-    console.log(Object.keys(data.rows));
+const search = function(Request)
+    const data = JSON.parse(Request.responseText);
+    if(data.error){
+        filmsTable.innerHTML = '';
+        //console.log(data.error)
+        $('#result').innerHTML = data.error;
+    }else {
+        filmsTable.innerHTML = '';
+        data.forEach(tr => {
+            let tableRow = document.createElement("tr");
+            for (let td in tr) {
+                let tableData = document.createElement("td");
+                if (td !== 'seance_id') {
+                    tableData.innerHTML = tr[td];
+                    tableRow.appendChild(tableData);
+                }
+            }
+            tableRow.setAttribute('data-seance-id', tr['seance_id']);
+            tableRow.value = tr['seance_id'];
+            filmsTable.appendChild(tableRow);
+            //console.log(tr['seance_id']);
 
     Object.keys(data.rows).forEach(tr => {
         let tableRow = document.createElement("tr");

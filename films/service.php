@@ -17,10 +17,11 @@ if(isset ($_POST['type']) && isset($_POST['data'])) {
             getSeance($data);
             break;
         case 'getHall':
-            getHall($data);
+            //getHall($data);
+            getTickets(1);
             break;
         default:
-            sendErrorMessage("Not found");
+            sendMessage('error', "Not found");
             break;
     }
 }
@@ -122,8 +123,8 @@ function search($filter) {
             $response = json_encode($searchResult, JSON_UNESCAPED_UNICODE);
             echo $response;
             //echo $sql;
-        } else sendErrorMessage('По вашему запросу сеансов не найдено');
-    } else sendErrorMessage('Данные не получены');
+        } else sendMessage('info','По вашему запросу сеансов не найдено');
+    } else sendMessage('error','Нет подключения к базе данных');
 }
 
 function getSeance($data) {
@@ -170,8 +171,8 @@ function getSeance($data) {
             }
             $response = json_encode($film, JSON_UNESCAPED_UNICODE);
             echo $response;
-        } else sendErrorMessage('Данные не получены');
-    } else sendErrorMessage('Данные не получены');
+        } else sendMessage('error','Данные не получены');
+    } else sendMessage('error','Нет подключения к базе данных');
 }
 
 function getHall($data) {
@@ -214,11 +215,97 @@ function getHall($data) {
             }
             $response = json_encode($hall, JSON_UNESCAPED_UNICODE);
             echo $response;
-        } else sendErrorMessage('Данные не получены');
-    } else sendErrorMessage('Данные не получены');
+        } else sendMessage('error','Данные не получены');
+    } else sendMessage('error','Нет подключения к базе данных');
 }
 
-function sendErrorMessage($message) {
-    $error = ['error' => $message];
-    echo json_encode($error, JSON_UNESCAPED_UNICODE);
+function updateOrder ($data) {
+    $db = connect();
+    if ($db) {
+        $data = json_decode($data, true);
+        $order = $data['order'];
+        $id_seance = $data['id_seance'];
+
+        $sqlInsert = 'INSERT INTO `ticket`(
+                `ID_seance`, 
+                `ID_status`, 
+                `row`, 
+                `number`) 
+                VALUES';
+        $sqlInsertValues = false;
+        $sqlUpdate = false;
+
+        //Получить текущий список билетов на сеанс
+        $res = getTickets($id_seance);
+
+        foreach($order as $position) {
+
+        // Если на текущий сеанс есть заказы в базе,
+        // то для каждой позиции заказа проверяем наличие в списке текущих билетов на сеанс
+
+            if (count($res)>0){
+                foreach ($res as $ticket) {
+
+                    //Если билет был найден, добавляем запрос на обновление статус существующего тикета
+
+                    if($res['row'] == $position['row'] && $res['number'] == $position['number'] ) {
+                        $sqlUpdate.='UPDATE `ticket` 
+                                  SET
+                                  `ID_status`='.$position['status'].',
+                                  WHERE `ID_seance`='.$id_seance.' AND
+                                  `row` = '.$position['row'].' AND
+                                  `number` = '.$position['number'].'; ';
+                    } else { //...иначе - добавляем запрос на вставку нового;
+                        $sqlInsertValues .= '('.$id_seance.', '.
+                        $position['status']!=0 ? $position['status'] : NULL.','.
+                            $position['row'].','.
+                            $position['number'].'),';
+                    }
+                }
+            } else {
+                //...иначе - сразу добавляем запрос на добавление нового тикета
+                $sqlInsertValues .= '('.$id_seance.', '.
+                $position['status']!=0 ? $position['status'] : NULL.','.
+                    $position['row'].','.
+                    $position['number'].'),';
+            }
+        }
+        // Если необходимо добавить новые тикеты, отправляем insert
+        if ($sqlInsertValues) {
+            $sql = trim($sqlInsert.$sqlInsertValues);
+            if(mysqli_query($db, $sql)) {sendMessage('info','Заказ обновлен');}
+            else sendMessage('error','Заказ не был обновлен');
+        }
+        // Если надо обновить существующие тикеты, отправляем update
+        if($sqlUpdate) {
+            $sql = $sqlUpdate;
+            if(mysqli_query($db, $sql)) {sendMessage('info','OK');}
+            else sendMessage('error','Заказ не был обновлен');
+        }
+    } else sendMessage('error','Нет подключения к базе данных');
+}
+
+// Получение списка существующих тикетов по id сеанса
+function getTickets($id_seance) {
+    $db = connect();
+    if ($db) {
+        $sqlTickets = 'SELECT * FROM `ticket` WHERE `ID_seance`='.$id_seance;
+        $query = mysqli_query($db, $sqlTickets);
+        if(mysqli_num_rows($query) > 0) {
+            $res = mysqli_fetch_all($query, MYSQLI_ASSOC);
+            return $res;
+        } else return false;
+    } else sendMessage('error','Нет подключения к базе данных');
+}
+
+function sendMessage($type, $text) {
+    switch ($type){
+        case 'error':
+            $message = ['error' => $text];
+        case 'info':
+            $message = ['info' => $text];
+        default:
+            $message = ['error' => "Неизвестная ошибка"];
+    }
+    echo json_encode($message, JSON_UNESCAPED_UNICODE);
 }
