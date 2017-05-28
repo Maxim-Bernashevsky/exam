@@ -49,14 +49,14 @@ const search = function(Request) {
 };
 
 const getHall = function(Request) {
-    console.log(Request.responseText);
+    //console.log(Request.responseText);
 
     const data = JSON.parse(Request.responseText);
 
     hallTable.innerHTML = '';
     Object.keys(data.rows).forEach(tr => {
         let tableRow = document.createElement("tr");
-        console.log(tr);
+        //console.log(tr);
         tableRow.setAttribute('data-row', tr);
 
         for (let td in data.rows[tr].places) {
@@ -69,7 +69,7 @@ const getHall = function(Request) {
         }
         //tableRow.setAttribute('data-seance-id', tr['seance_id']);
         //tableRow.value = tr['seance_id'];
-        console.log(tableRow)
+        //console.log(tableRow)
         hallTable.appendChild(tableRow);
         //console.log(tr['seance_id']);
     });

@@ -11,7 +11,6 @@ $( document ).ready(function() {
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
     const seanceId = getParameterByName('seance_id');
-    console.log(seanceId);
     hallTable.setAttribute('data-id-seance', seanceId);
 
     const hall = {
@@ -19,61 +18,77 @@ $( document ).ready(function() {
     };
 
     ReadFile('service.php', 'result', hall, 'getHall');
-});
 
-stateOrder = [];
+    let stateOrder = [];
 
-$( "#hallTable" ).on( "click", function(e) {
-    const seanceId = $('#hallTable').attr('data-id-seance');
-    const status = e.target.attributes['data-status'].value === '0' ? '1' : '0';
-    const row = e.target.parentNode.attributes['data-row'].value;
-    const place = e.target.innerHTML;
 
-    const order = {
-        row: row,
-        number: place,
-        status: status
-    };
-    const removePlace = function (row, place){
-        if(stateOrder.length){
-            stateOrder.foreach((el, i) => {
-                console.log(el, i);
-                if(el.row === row && el.place === place){
-                    stateOrder[i].status = 0;
-                    stateOrder.push(order);
-                    //stateOrder.splice(i, 1);
+    $( "#hallTable" ).on( "click", function(e) {
+        const seanceId = $('#hallTable').attr('data-id-seance');
+        const status = e.target.attributes['data-status'].value;
+        const row = e.target.parentNode.attributes['data-row'].value;
+        const place = e.target.innerHTML;
+
+        const order = {
+            row: row,
+            number: place,
+            status: status
+        };
+        const checkStateOrder = function (row, place){
+            if(stateOrder.length > 0){
+                for(let i = 0; i < stateOrder.length; i++){
+                    if(stateOrder[i].row === row && stateOrder[i].number === place){
+                        stateOrder.splice(i, 1);
+                    }
                 }
-            })
-        } else {
-            stateOrder.push(order);
-        }
-        console.log('remove');
-    };
-    console.log(status === '0');
-    status == '1' ? stateOrder.push(order) : removePlace(row, place);
-    console.log(stateOrder);
+            }
+        };
 
-    const orderUpdate = {
-        id_seance: seanceId,
-        order: stateOrder
-    };
-    showOrder();
-    ReadFile('service.php', 'result', orderUpdate, 'updateOrder');
-});
+        order.status === '0' ? stateOrder.push(order) : checkStateOrder(row, place);
+
+        order.status = order.status === '0' ? '1' : '0';
+        e.target.setAttribute('data-status', order.status);
+
+        const orderUpdate = {
+            id_seance: seanceId,
+            order: [order]
+        };
+
+        console.log('toUpdate',orderUpdate);
+        //lastUpdate = order;
+        ReadFile('service.php', 'result', orderUpdate, 'updateOrder');
+        showOrder();
+    });
+
+    $( "#getOrder" ).on( "click", function(e) {
+        console.log(stateOrder);
+        let updateList = [];
+        stateOrder.forEach(el => {
+            el.status = 2;
+            updateList.push(el);
+        });
 
 
-function showOrder(){
+        const request = {
+            id_seance: seanceId,
+                order: updateList
+        };
+        console.log(request);
+        ReadFile('service.php', 'result', request, 'updateOrder');
 
-    let text = 'Ваш заказ: ';
-
-    stateOrder.forEach(el=>{
-        //console.log(el, rows);
-        text += el.number + 'место ('+ el.row + 'ряд),';
     });
 
 
+    function showOrder(){
 
-    stateOrderBlock.innerHTML = text;
+        let text = stateOrder.length ? 'Ваш заказ: ' : '';
+
+        stateOrder.forEach(el => {
+            text += el.number + 'место ('+ el.row + 'ряд), ';
+        });
+        text = text.substring(0,text.length-2);
+        text = text ? text + '.' : '';
+        stateOrderBlock.innerHTML = text ;
+    }
 
 
-}
+});
