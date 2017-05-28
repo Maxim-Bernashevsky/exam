@@ -125,14 +125,4 @@ $( document ).ready(function() {
 
 
 
-    $( "#pageHall" ).on( "click", function(e) {
-        //const hall_id = $('#pageHall').attr('data-hall-id');
-        const seanceId = {
-            seanceId: $('#pageHall').attr('data-seance-id')
-        };
-        ReadFile('service.php', 'result', seanceId, 'getHall');
-    });
-
-
-
 
