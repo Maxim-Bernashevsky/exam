@@ -59,14 +59,14 @@ function search($filter) {
             switch ($key) {
                 case 'dateStart':
                     if($value != null) {
-                        $dateStart = strtotime($value);
-                        $dateStart = date('Y-m-d', $dateStart);
+                        $dateStart = date_create_from_format ("d/m/Y", $value);
+                        $dateStart = date_format($dateStart,'Y-m-d');
                     $sql .= 'DATE(`seance`.`datetime`) >= \''.$dateStart.'\' AND ' ;}
                     break;
                 case 'dateEnd':
                     if($value != null) {
-                        $dateEnd = strtotime($value);
-                        $dateEnd = date('Y-m-d', $dateEnd);
+                        $dateEnd = date_create_from_format ("d/m/Y", $value);
+                        $dateEnd = date_format($dateEnd,'Y-m-d');
                     $sql .= 'DATE(`seance`.`datetime`) <= \''.$dateEnd.'\' AND ' ;}
                     break;
                 case 'film':
