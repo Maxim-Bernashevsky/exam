@@ -3,6 +3,7 @@ html,body{
     margin: 0;
     padding: 0;
     color: #383838;
+    font-family: 'Noto Sans', Arial;
 }
 header{
     border-top: 3px solid peachpuff;
@@ -78,8 +79,9 @@ tr, td{
     transition: background-color .06s ease-in-out;
 }
 #hallTable td:hover{
-    background-color: #f8e9d9;
+    background-color: #faf1e8;
     cursor: pointer;
+    box-shadow: inset 0 0 13px -1px #ffe0cd;
 }
 
 .ttl{
@@ -92,11 +94,16 @@ tr, td{
     text-align: left;
 }
 
-.seanceDate, .seanceTime{
-    font-size: 1.2rem;
+.seanceDate, .seanceTime, .hall-ttl{
+    font-size: 1.7rem;
+    line-height: 2rem;
     font-weight: bold;
+    color: #595959;
 }
-#pageHall{
+.price-text{
+    letter-spacing: 1px;
+}
+#pageHall, #getOrder{
     background-color: #f9e4d1;
     background-image: -webkit-linear-gradient(top,#fff 0,#fff0e2 100%);
 }
@@ -118,9 +125,13 @@ td[data-status='2']{
 }
 .wrap-table{
     margin-top: 20px;
-    background-color: #fcfcfc;
     padding: 20px;
     border-radius: 20px;
+    /*background-color: #fcfcfc;*/
+
+
+
+    background: linear-gradient(180deg, #fcfcfc, white);
 }
 #seanceHall{
     border: none;
@@ -139,4 +150,17 @@ td[data-status='2']{
 }
 #stateOrderBlock{
     display: inline-block;
+
+    padding: 0 20px 0 10px;
+    border-left: 30px solid #fff0e2;
+}
+
+.screen{
+    width: 100%;
+    border-radius: 3px;
+    height: 10px;
+    border-top: 5px solid #f5f5f5;
+    background-color: #fef1e5;
+    margin: 0 auto 70px;
+    box-shadow: 0 22px 6px 20px rgba(255, 240, 226, 0.11);
 }
