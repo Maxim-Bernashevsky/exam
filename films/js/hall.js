@@ -34,21 +34,24 @@ $( "#hallTable" ).on( "click", function(e) {
         number: place,
         status: status
     };
-    console.log(status === '0');
-    status == '1' ? stateOrder.push(order) : removePlace(row, place);
-    console.log(stateOrder);
-
     const removePlace = function (row, place){
         if(stateOrder.length){
             stateOrder.foreach((el, i) => {
                 console.log(el, i);
-                // if(el.row === row && el.place === place){
-                //     stateOrder.splice(i, 1);
-                // }
+                if(el.row === row && el.place === place){
+                    stateOrder[i].status = 0;
+                    stateOrder.push(order);
+                    //stateOrder.splice(i, 1);
+                }
             })
+        } else {
+            stateOrder.push(order);
         }
         console.log('remove');
     };
+    console.log(status === '0');
+    status == '1' ? stateOrder.push(order) : removePlace(row, place);
+    console.log(stateOrder);
 
     const orderUpdate = {
         id_seance: seanceId,

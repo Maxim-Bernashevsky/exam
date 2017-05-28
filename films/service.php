@@ -17,8 +17,10 @@ if(isset ($_POST['type']) && isset($_POST['data'])) {
             getSeance($data);
             break;
         case 'getHall':
-            //getHall($data);
-            getTickets(1);
+            getHall($data);
+            break;
+        case 'updateOrder':
+            updateOrder($data);
             break;
         default:
             sendMessage('error', "Not found");
@@ -239,46 +241,50 @@ function updateOrder ($data) {
         $res = getTickets($id_seance);
 
         foreach($order as $position) {
-
+            $positionStatus =  $position['status']!=0 ? $position['status'] : "null";
         // Если на текущий сеанс есть заказы в базе,
         // то для каждой позиции заказа проверяем наличие в списке текущих билетов на сеанс
-
-            if (count($res)>0){
+            if ($res){
+                $isUpdate = false;
                 foreach ($res as $ticket) {
-
                     //Если билет был найден, добавляем запрос на обновление статус существующего тикета
-
-                    if($res['row'] == $position['row'] && $res['number'] == $position['number'] ) {
+                    if($ticket['row'] == $position['row'] && $ticket['number'] == $position['number'] ) {
                         $sqlUpdate.='UPDATE `ticket` 
                                   SET
-                                  `ID_status`='.$position['status'].',
+                                  `ID_status`='.$positionStatus.'
                                   WHERE `ID_seance`='.$id_seance.' AND
                                   `row` = '.$position['row'].' AND
                                   `number` = '.$position['number'].'; ';
-                    } else { //...иначе - добавляем запрос на вставку нового;
-                        $sqlInsertValues .= '('.$id_seance.', '.
-                        $position['status']!=0 ? $position['status'] : NULL.','.
-                            $position['row'].','.
-                            $position['number'].'),';
+                        $isUpdate = true;
                     }
                 }
+                //...иначе - добавляем запрос на вставку нового;
+                if (!$isUpdate) {
+                    $sqlInsertValues .= '('.$id_seance.', '.
+                        $positionStatus.','.
+                        $position['row'].','.
+                        $position['number'].'),';
+                }
+
             } else {
                 //...иначе - сразу добавляем запрос на добавление нового тикета
-                $sqlInsertValues .= '('.$id_seance.', '.
-                $position['status']!=0 ? $position['status'] : NULL.','.
+                $sqlInsertValues .= '('.$id_seance.','.
+                $positionStatus.','.
                     $position['row'].','.
                     $position['number'].'),';
             }
         }
         // Если необходимо добавить новые тикеты, отправляем insert
         if ($sqlInsertValues) {
-            $sql = trim($sqlInsert.$sqlInsertValues);
+            $sql = trim($sqlInsert.$sqlInsertValues, ",");
+            //echo $sql;
             if(mysqli_query($db, $sql)) {sendMessage('info','Заказ обновлен');}
             else sendMessage('error','Заказ не был обновлен');
         }
         // Если надо обновить существующие тикеты, отправляем update
         if($sqlUpdate) {
             $sql = $sqlUpdate;
+            //echo $sql;
             if(mysqli_query($db, $sql)) {sendMessage('info','OK');}
             else sendMessage('error','Заказ не был обновлен');
         }
@@ -304,8 +310,6 @@ function sendMessage($type, $text) {
             $message = ['error' => $text];
         case 'info':
             $message = ['info' => $text];
-        default:
-            $message = ['error' => "Неизвестная ошибка"];
     }
     echo json_encode($message, JSON_UNESCAPED_UNICODE);
 }

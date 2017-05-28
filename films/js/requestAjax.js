@@ -21,61 +21,6 @@ const getSeance = function (Request) {
 };
 
 
-
-const getHall = function(Request) {
-    console.log(Request.responseText);
-
-    const data = JSON.parse(Request.responseText);
-
-    hallTable.innerHTML = '';
-
-const search = function(Request)
-    const data = JSON.parse(Request.responseText);
-    if(data.error){
-        filmsTable.innerHTML = '';
-        //console.log(data.error)
-        $('#result').innerHTML = data.error;
-    }else {
-        filmsTable.innerHTML = '';
-        data.forEach(tr => {
-            let tableRow = document.createElement("tr");
-            for (let td in tr) {
-                let tableData = document.createElement("td");
-                if (td !== 'seance_id') {
-                    tableData.innerHTML = tr[td];
-                    tableRow.appendChild(tableData);
-                }
-            }
-            tableRow.setAttribute('data-seance-id', tr['seance_id']);
-            tableRow.value = tr['seance_id'];
-            filmsTable.appendChild(tableRow);
-            //console.log(tr['seance_id']);
-
-    Object.keys(data.rows).forEach(tr => {
-        let tableRow = document.createElement("tr");
-        console.log(tr);
-        tableRow.setAttribute('data-row', tr);
-
-        for (let td in data.rows[tr].places) {
-            let tableData = document.createElement("td");
-            //console.log(td);
-            tableData.innerHTML = data.rows[tr].places[td].number;
-            tableData.setAttribute('data-status', data.rows[tr].places[td].status);
-
-            tableRow.appendChild(tableData);
-        }
-        //tableRow.setAttribute('data-seance-id', tr['seance_id']);
-        //tableRow.value = tr['seance_id'];
-        console.log(tableRow)
-        hallTable.appendChild(tableRow);
-        //console.log(tr['seance_id']);
-
-    });
-
-
-};
-
-
 const search = function(Request) {
     //console.log(Request.responseText);
     const data = JSON.parse(Request.responseText);
@@ -103,6 +48,35 @@ const search = function(Request) {
     }
 };
 
+const getHall = function(Request) {
+    console.log(Request.responseText);
+
+    const data = JSON.parse(Request.responseText);
+
+    hallTable.innerHTML = '';
+    Object.keys(data.rows).forEach(tr => {
+        let tableRow = document.createElement("tr");
+        console.log(tr);
+        tableRow.setAttribute('data-row', tr);
+
+        for (let td in data.rows[tr].places) {
+            let tableData = document.createElement("td");
+            //console.log(td);
+            tableData.innerHTML = data.rows[tr].places[td].number;
+            tableData.setAttribute('data-status', data.rows[tr].places[td].status);
+
+            tableRow.appendChild(tableData);
+        }
+        //tableRow.setAttribute('data-seance-id', tr['seance_id']);
+        //tableRow.value = tr['seance_id'];
+        console.log(tableRow)
+        hallTable.appendChild(tableRow);
+        //console.log(tr['seance_id']);
+    });
+}
+const updateOrder = function(Request) {
+    console.log(Request.responseText);
+}
 function ReadFile(filename, container, filterData, type) {
 
     console.log(filterData)
@@ -118,6 +92,9 @@ function ReadFile(filename, container, filterData, type) {
             break;
         case 'getHall':
             Handler = getHall;
+            break;
+        case 'updateOrder':
+            Handler = updateOrder;
             break;
         default:
         //
