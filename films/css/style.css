@@ -161,3 +161,10 @@ td[data-status='2']{
     margin: 0 auto 70px;
     box-shadow: 0 22px 6px 20px rgba(255, 240, 226, 0.11);
 }
+
+.tac{
+    text-align: center;
+}
+.mb-20{
+    margin-bottom: 20px;
+}

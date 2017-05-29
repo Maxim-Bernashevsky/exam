@@ -27,60 +27,55 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-12">
+            <h2 class="modal-title tac mb-20" id="filmName">Film</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
 
-
-            <!--<form action="" id="filterCinema" class="form-horizontal">-->
-                <!--<div class="form-group">-->
-                    <!--<label for="dateStart">Дата от</label>-->
-                    <!--<input type="text" id="dateStart" name="dateStart" class="form-control">-->
-                <!--</div>-->
-
-                <!--<div class="form-group">-->
-                    <!--<label for="dateEnd">Дата до</label>-->
-                    <!--<input type="text" id="dateEnd" name="dateEnd" class="form-control">-->
-                <!--</div>-->
-
-                <!--<div class="form-group">-->
-                    <!--<label for="film">Фильм</label>-->
-                    <!--<input type="text" name="film" id="film" class="form-control">-->
-                <!--</div>-->
-
-                <!--<div class="form-group">-->
-                    <!--<label for="genre">Жанр</label>-->
-                    <!--<select name="genre" id="genre" class="form-control">-->
-                        <!--<option value="0">Не выбрано</option>-->
-                        <!--<option value="1">Фэнтези</option>-->
-                        <!--<option value="2">Приключения</option>-->
-                        <!--<option value="4">Драма</option>-->
-                        <!--<option value="5">Комедия</option>-->
-                    <!--</select>-->
-                <!--</div>-->
-
-                <!--<div class="form-group">-->
-                    <!--<label for="timeStart">Время от</label>-->
-                    <!--<input type="text" id="timeStart" name="timeStart" class="form-control">-->
-                <!--</div>-->
-
-                <!--<div class="form-group">-->
-                    <!--<label for="timeEnd">Время до</label>-->
-                    <!--<input type="text" id="timeEnd" name="timeEnd" class="form-control">-->
-                <!--</div>-->
-
-                <!--<div class="form-group">-->
-                    <!--<label>Стоимость</label>-->
-                    <!--<input id="priceMin" name="priceMin" type="text" hidden>-->
-                    <!--<input id="priceMax" name="priceMax" type="text" hidden>-->
-                    <!--<input id="price">-->
-                    <!--<div id="slider-range"></div>-->
-                <!--</div>-->
-
-                <!--<input type="submit">-->
-            <!--</form>-->
-
+            <p class="filmGenre">
+                <span class="ttl">Жанр: </span>
+                <span> </span>
+            </p>
+            <p class="filmDirector">
+                <span class="ttl">Режиссер: </span>
+                <span> </span>
+            </p>
+            <p class="filmActors">
+                <span class="ttl">Актеры: </span>
+                <span></span>
 
         </div>
-        <div class="col-md-10">
+        <div class="col-md-2">
+            <p class="seanceDate"></p>
+            <p class="seanceTime"></p>
+            <p class="seanceHall">
+                <span class="ttl">Зал: </span>
+                <span></span>
+            </p>
+            <p class="seancePrice">
+                <span class="ttl">Цена: </span>
+                <span></span>
+            </p>
+        </div>
+        <div class="col-md-7">
+
+            <p class="filmDescription">
+                <span class="ttl">Описание: </span>
+                <span></span>
+            </p>
+        </div>
+
+    </div>
+</div>
+<div id="pageHall"></div>
+</div>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
 
             <div id="result"></div>
 
@@ -109,61 +104,6 @@
 
 
 
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" id="filmName">Film</h4>
-            </div>
-            <div class="modal-body" id="filmInfo">
-
-                <p class="filmGenre">
-                    <span class="ttl">Жанр: </span>
-                    <span> </span>
-                </p>
-                <p class="filmDirector">
-                    <span class="ttl">Режиссер: </span>
-                    <span> </span>
-                </p>
-                <p class="filmActors">
-                    <span class="ttl">Актеры: </span>
-                    <span></span>
-                <p class="filmDescription">
-                    <span class="ttl">Описание: </span>
-                    <span></span>
-                </p>
-
-            </div>
-
-            <div class="modal-footer">
-                <div class="container-fluid seance-block">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <p class="seanceDate"></p>
-                            <p class="seanceTime"></p>
-                        </div>
-                        <div class="col-md-8">
-                            <p class="seanceHall">
-                                <span class="ttl">Зал: </span>
-                                <span></span>
-                            </p>
-                            <p class="seancePrice">
-                                <span class="ttl">Цена: </span>
-                                <span></span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-    </div>
-</div>
 
 
 <footer>
