@@ -56,33 +56,31 @@ const getHall = function(Request) {
     hallTable.innerHTML = '';
     Object.keys(data.rows).forEach(tr => {
         let tableRow = document.createElement("tr");
-        //console.log(tr);
         tableRow.setAttribute('data-row', tr);
-
+        let tableNumberRow = document.createElement("td");
+        let emptytableData = document.createElement("td");
+        tableNumberRow.innerHTML = tr;
+        emptytableData.innerHTML = 'Z';
+        tableRow.appendChild(tableNumberRow);
+        tableRow.appendChild(emptytableData);
         for (let td in data.rows[tr].places) {
             let tableData = document.createElement("td");
-            //console.log(td);
+
             tableData.innerHTML = data.rows[tr].places[td].number;
             tableData.setAttribute('data-status', data.rows[tr].places[td].status);
             tableData.setAttribute('data-number', data.rows[tr].places[td].number);
             tableRow.appendChild(tableData);
         }
-        //tableRow.setAttribute('data-seance-id', tr['seance_id']);
-        //tableRow.value = tr['seance_id'];
-        //console.log(tableRow)
+
         hallTable.appendChild(tableRow);
 
-        //console.log(tr['seance_id']);
     });
 }
-const updateOrder = function(Request) {
-    console.log(Request.responseText);
-}
+
 function ReadFile(filename, container, filterData, type) {
 
     console.log(filterData)
     //Создаем функцию обработчик
-
     let Handler;
     switch(type){
         case 'search':
@@ -98,7 +96,7 @@ function ReadFile(filename, container, filterData, type) {
             Handler = updateOrder;
             break;
         default:
-        //
+            Handler = console.log
     }
 
     //document.getElementById(container).innerHTML = '<img src="Loader.gif" width="100"/>';
@@ -109,7 +107,9 @@ function ReadFile(filename, container, filterData, type) {
 
     SendRequest("POST", filename, request, Handler);
 }
-
+const updateOrder = function(Request) {
+    console.log(Request.responseText);
+}
 function SendRequest(method, path, args, handler) {
     //Создаём запрос
     var Request = CreateRequest();

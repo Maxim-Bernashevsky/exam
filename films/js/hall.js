@@ -26,7 +26,7 @@ $( document ).ready(function() {
     let stateOrder = [];
 
     $( '#hallTable').on( "click", function(e) {
-        if(e.target.attributes['data-status'].value !== '2'){
+        if(e.target.attributes['data-status'] && e.target.attributes['data-status'].value !== '2'){
             const seanceId = $('#hallTable').attr('data-id-seance');
             const status = e.target.attributes['data-status'].value;
             const row = e.target.parentNode.attributes['data-row'].value;
@@ -84,25 +84,34 @@ $( document ).ready(function() {
                 order: updateList
         };
         console.log(request);
-
-
-
+        $( "#stateOrderBlock").addClass('paid');
+        getOrder.setAttribute('disabled', '');
         ReadFile('service.php', 'result', request, 'updateOrder');
-
-
 
     });
 
 
     function showOrder(){
-        let text = stateOrder.length ? 'Ваш заказ: ' : '';
+        let text = '';
+        if(stateOrder.length > 0){
+            text = 'Ваш заказ: ';
+            $('#getOrder').removeAttr('disabled');
+        }else{
+            getOrder.setAttribute('disabled', '');
+        }
+
+        let price = $('p.seancePrice')[0].children[1].innerHTML;
 
         stateOrder.forEach(el => {
             text += el.number + 'место ('+ el.row + 'ряд), ';
         });
         text = text.substring(0,text.length-2);
-        text = text ? text + '.' : '';
-        stateOrderBlock.innerHTML = text ;
+        if(text){
+            text += '. Стоимость ' + price * stateOrder.length + ' ₽';
+        }else{
+            text = '';
+        }
+        stateOrderBlock.innerHTML = text;
     }
 
 });
