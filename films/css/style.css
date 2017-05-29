@@ -182,5 +182,9 @@ td[data-status='2']{
 }
 #stateOrderBlock.paid{
     border-left: 30px solid rgba(209, 255, 185, 0.44);
+}
 
+a:focus, a:hover, a {
+    color: #333;
+    text-decoration: none;
 }
