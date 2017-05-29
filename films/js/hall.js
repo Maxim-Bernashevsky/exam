@@ -17,6 +17,10 @@ $( document ).ready(function() {
         id_seance: seanceId
     };
     console.log(hall)
+
+    const seance = { id: seanceId };
+
+    ReadFile('service.php', 'result', seance, 'getSeance');
     ReadFile('service.php', 'result', hall, 'getHall');
 
     let stateOrder = [];
